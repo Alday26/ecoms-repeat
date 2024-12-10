@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Checkout</h1>
+
+        <!-- Display products in the cart -->
+        <div class="row">
+            <div class="col-md-8">
+                <h2>Products in your cart</h2>
+                {% if products %}
+                    <ul class="list-group">
+                        {% for product in products %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5>{{ product.name }}</h5>
+                                    <p>${{ "%.2f"|format(product.price) }}</p>
+                                </div>
+                                <span class="badge bg-primary rounded-pill">{{ product.quantity }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Your cart is empty.</p>
+                {% endif %}
+            </div>
+
+            <!-- Total price and checkout button -->
+            <div class="col-md-4">
+                <h2>Total Price</h2>
+                <p class="fs-3 fw-bold text-primary">${{ "%.2f"|format(total_price) }}</p>
+                <form action="{{ url_for('complete_checkout') }}" method="post">
+                    <button type="submit" class="btn btn-success btn-lg w-100 mb-4">
+                        <i class="bi bi-check-circle"></i> Complete Purchase
+                    </button>
+                </form>
+                <a href="{{ url_for('product_page') }}" class="btn btn-outline-secondary w-100">
+                    <i class="bi bi-arrow-left"></i> Back to Products
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+    

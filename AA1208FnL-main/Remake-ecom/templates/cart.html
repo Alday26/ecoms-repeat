@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <title>Your Cart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        .cart-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .product-image {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .product-details {
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        .product-details h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #444;
+        }
+
+        .product-details p {
+            font-size: 18px;
+            color: #666;
+        }
+
+        .remove-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .remove-btn:hover {
+            background: #c0392b;
+        }
+
+        .cart-summary {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .cart-summary p {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .checkout-btn {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-size: 18px;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .checkout-btn:hover {
+            background: #218838;
+        }
+
+        .empty-cart {
+            text-align: center;
+            font-size: 20px;
+            color: #999;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'nav_main.html' %}
+    
+    <h1>Your Cart</h1>
+        <div class="cart-container">
+            {% if products %}
+                {% for product in products %}
+                    <div class="cart-item">
+                        <img src="{{ url_for('static', filename='uploads/' + product['image_url']) }}" alt="{{ product['name'] }}" class="product-image">
+                        <div class="product-details">
+                            <h3>{{ product['name'] }}</h3>
+                            <p>${{ product['price'] }}</p>
+                        </div>
+                        <form action="{{ url_for('remove_from_cart', product_id=product['id']) }}" method="POST">
+                            <button type="submit" class="remove-btn">Remove</button>
+                        </form>
+                    </div>
+                {% endfor %}
+                <div class="cart-summary">
+                    <p><strong>Total:</strong> ${{ total_price }}</p>
+                    <a href="{{ url_for('checkout') }}" class="checkout-btn">Proceed to Checkout</a>
+                </div>
+            {% else %}
+                <p class="empty-cart">Your cart is empty. Start shopping now!</p>
+            {% endif %}
+    </div>
+</body>
+</html>
